@@ -49,5 +49,5 @@ for x in range(0, length):
         sheet1.write(x+1, 2, "No reverse primer")
 
 # write to output file
-wb.save('C:/Users/Samantha/Desktop/output_primers.xls')
+wb.save('./output/output_primers.xls')
 
