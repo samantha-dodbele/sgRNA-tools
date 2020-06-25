@@ -50,3 +50,4 @@ for x in range(0, length):
 
 # write to output file
 wb.save('C:/Users/Samantha/Desktop/output_primers.xls')
+
