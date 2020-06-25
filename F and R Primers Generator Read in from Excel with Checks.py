@@ -3,19 +3,9 @@
 
 # Guide Excel file should be saved on Desktop and should be labeled "Guides" in cell A1 and then all the guides below it
 
-# Reading an excel file using Python 
-!pip install pandas
-!pip install xlrd
-!pip install ipynb
-!pip install xlwt
-
 import pandas as pd
-
-#from xlwriter import workbook
 from xlwt import Workbook
-
-#import ReverseComplementGenerator_3.ipynb
-from ipynb.fs.defs.ReverseComplementFunctions import *
+from utils import *
 
 df = pd.read_excel(r'C:\Users\Samantha\Desktop\guides.xlsx')
     
