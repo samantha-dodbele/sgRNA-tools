@@ -8,7 +8,7 @@ from xlwt import Workbook
 from utils import *
 
 # Read in xlsx file named 'guides' on desktop
-df = pd.read_excel(r'.\input\guides.xlsx')
+df = pd.read_excel('.\input\guides.xlsx')
 
 # Workbook is created
 wb = Workbook()

@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Read in xlsx file named 'guides' on desktop
-df = pd.read_excel(r'C:\Users\Samantha\Desktop\guides.xlsx')
+df = pd.read_excel(r'.\input\guides.xlsx')
 
 length = len(df["Guides"])
 fasta = []
@@ -12,4 +12,3 @@ for x in range(0, length):
 
 with open('./output/fasta.txt','w') as f:
     f.write('\n'.join(fasta))
-
