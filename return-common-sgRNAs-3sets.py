@@ -30,9 +30,5 @@ print("Common in between 1 and 3: "+str(len(intersection_3)))
 # common in between 2 and 3
 print("Common in between 2 and 3: "+str(len(intersection_4)))
 
-
-#intersection_as_list = list(intersection_1)
-
-
 with open('./output/common_sgrnas.txt', 'w') as f:
     f.write('\n'.join(intersection_as_list))
