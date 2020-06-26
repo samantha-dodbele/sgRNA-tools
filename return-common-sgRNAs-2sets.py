@@ -5,8 +5,8 @@ import pandas as pd
 # Read in xlsx file named 'guides' on desktop
 df = pd.read_excel(r'.\input\compareguides.xlsx')
 
-list1 = df['Guides'].tolist()
-list2 = df['Guides1'].tolist()
+list1 = df['CrisPick'].tolist()
+list2 = df['Ecrisp'].tolist()
 
 s_list1 = set(list1)
 s_list2 = set(list2)
