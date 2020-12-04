@@ -28,5 +28,5 @@ for i in list(comb):
 rankedlist=sorted(seqtogether,key=lambda x: (x[4] if x[4] == 0 else -1 / x[4], x[5] if x[5] == 0 else -1 / x[5]  ))
 
 
-df= pd.DataFrame(rankedlist, columns=["index","guide1","guide2","guide2", 'score', 'score'])
+df= pd.DataFrame(rankedlist, columns=["index","guide1","guide2","guide3", 'score', 'score'])
 df.to_csv(r'.\output\ranked_guides.txt', sep='\t')
