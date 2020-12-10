@@ -107,8 +107,7 @@ for i in list(comb):
 
     # seqtogether.append ([i, df.iloc[i[0]][0],df.iloc[i[1]][0], df.iloc[i[2]][0], start2-end1, start3-end2])
 
-# rankedlist=sorted(seqtogether,key=lambda x: x[3], reverse= True)
-rankedlist=sorted(seqtogether,key=lambda x: (x[1], -x[2], x[3],-x[4]), reverse= True)
+rankedlist=sorted(seqtogether,key=lambda x: (x[1], -x[2], -x[4], x[3]), reverse= True)
 
 seq1index= rankedlist[0][0][0]
 seq2index= rankedlist[0][0][1]
