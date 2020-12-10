@@ -104,6 +104,30 @@ for i in list(comb):
 # rankedlist=sorted(seqtogether,key=lambda x: x[3], reverse= True)
 rankedlist=sorted(seqtogether,key=lambda x: (x[1], x[2], -x[3]), reverse= True)
 
+seq1index= rankedlist[0][0][0]
+seq2index= rankedlist[0][0][1]
+seq3index= rankedlist[0][0][2]
+seq4index= rankedlist[0][0][3]
+seq5index= rankedlist[0][0][4]
+seq6index= rankedlist[0][0][5]
+seq7index= rankedlist[0][0][6]
+seq8index= rankedlist[0][0][7]
+seq9index= rankedlist[0][0][8]
+seq10index= rankedlist[0][0][9]
+
+topresult=[]
+topresult.append([result.iloc[seq1index][0],result.iloc[seq2index][0], result.iloc[seq3index][0], result.iloc[seq4index][0], result.iloc[seq5index][0], result.iloc[seq6index][0], result.iloc[seq7index][0], result.iloc[seq8index][0], result.iloc[seq9index][0], result.iloc[seq10index][0]])
+
+# topresult.append([df.iloc[0][0],df.iloc[4][0], df.iloc[5][0], df.iloc[10][0], df.iloc[11][0], df.iloc[12][0], df.iloc[13][0], df.iloc[14][0], df.iloc[15][0], df.iloc[16][0]])
+
+
+fasta = []
+for x in range(0, 10):
+    fasta.append("> seq"+str(x+1))
+    fasta.append(str(topresult[0][x]))
+
+with open('./output/topresult.txt','w') as f:
+    f.write('\n'.join(fasta))
 
 result= pd.DataFrame(rankedlist, columns=["index", "rank1","rankpos", "rankneg",'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
 result.to_csv(r'.\output\ranked_guides.txt', sep='\t', index=False)
