@@ -1,6 +1,7 @@
 import pandas as pd
 from itertools import combinations 
 import csv
+import statistics
 
 df = pd.read_csv(r'.\input\guide-loc.txt', sep='\t')
 seq= df["Nucleotide sequence"]
@@ -97,12 +98,17 @@ for i in list(comb):
     else:
         negtotal += score9
 
-    seqtogether.append ([i, total/distance , postotal/distance, negtotal/distance, score1, score2, score3, score4, score5, score6, score7, score8, score9])
+    mean= (negtotal+postotal)/9
+    ideal= (distance/10)-20
+    scores= (score1, score2, score3, score4, score5, score6, score7, score8, score9)
+    stdev= statistics.stdev(scores,ideal)
+
+    seqtogether.append ([i, total/distance , stdev, postotal/distance, negtotal/distance, score1, score2, score3, score4, score5, score6, score7, score8, score9])
 
     # seqtogether.append ([i, df.iloc[i[0]][0],df.iloc[i[1]][0], df.iloc[i[2]][0], start2-end1, start3-end2])
 
 # rankedlist=sorted(seqtogether,key=lambda x: x[3], reverse= True)
-rankedlist=sorted(seqtogether,key=lambda x: (x[1], x[2], -x[3]), reverse= True)
+rankedlist=sorted(seqtogether,key=lambda x: (x[1], -x[2], x[3],-x[4]), reverse= True)
 
 seq1index= rankedlist[0][0][0]
 seq2index= rankedlist[0][0][1]
@@ -129,5 +135,5 @@ for x in range(0, 10):
 with open('./output/topresult.txt','w') as f:
     f.write('\n'.join(fasta))
 
-result= pd.DataFrame(rankedlist, columns=["index", "rank1","rankpos", "rankneg",'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
+result= pd.DataFrame(rankedlist, columns=["index", "rank1","stdev","rankpos", "rankneg",'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
 result.to_csv(r'.\output\ranked_guides.txt', sep='\t', index=False)
