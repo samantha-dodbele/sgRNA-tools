@@ -45,13 +45,65 @@ for i in list(comb):
     start10 = result.iloc[i[9]][1]
     end10 = result.iloc[i[9]][2]
     
-    seqtogether.append ([i, start2-end1, start3-end2, start4-end3, start5-end4, start6-end5, start7-end6, start8-end9, start9-end10])
+    score1= start2-end1
+    score2= start3-end2
+    score3= start4-end3
+    score4= start5-end4
+    score5= start6-end5
+    score6= start7-end6
+    score7= start8-end7
+    score8= start9-end8
+    score9= start10-end9
+    total=score1+score2+score3+score4+score5+score6+score7+score8+score9
+    distance=end10-start1
+
+
+    postotal=0
+    negtotal=0
+    if score1 > 0:
+        postotal += score1
+    else:
+        negtotal += score1
+    if score2 > 0:
+        postotal += score2
+    else:
+        negtotal += score2
+    if score3 > 0:
+        postotal += score3
+    else:
+        negtotal += score3
+    if score4 > 0:
+        postotal += score4
+    else:
+        negtotal += score4
+    if score5 > 0:
+        postotal += score5
+    else:
+        negtotal += score5
+    if score6 > 0:
+        postotal += score6
+    else:
+        negtotal += score6      
+    if score7 > 0:
+        postotal += score7
+    else:
+        negtotal += score7
+    if score8 > 0:
+        postotal += score8
+    else:
+        negtotal += score8 
+    if score9 > 0:
+        postotal += score9
+    else:
+        negtotal += score9
+
+    seqtogether.append ([i, total/distance , postotal/distance, negtotal/distance, score1, score2, score3, score4, score5, score6, score7, score8, score9])
 
     # seqtogether.append ([i, df.iloc[i[0]][0],df.iloc[i[1]][0], df.iloc[i[2]][0], start2-end1, start3-end2])
 
 # rankedlist=sorted(seqtogether,key=lambda x: x[3], reverse= True)
-rankedlist=sorted(seqtogether,key=lambda x: x[2], reverse= True)
+rankedlist=sorted(seqtogether,key=lambda x: (x[1], x[2], -x[3]), reverse= True)
 
 
-result= pd.DataFrame(rankedlist, columns=["index", 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
+result= pd.DataFrame(rankedlist, columns=["index", "rank1","rankpos", "rankneg",'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
 result.to_csv(r'.\output\ranked_guides.txt', sep='\t', index=False)
