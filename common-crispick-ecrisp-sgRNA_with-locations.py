@@ -19,7 +19,9 @@ df.columns = ['end' if x ==
               'End' else x for x in df.columns]
 end = df['end']
 
+# remove NGG from the ecrisp sequence and remove three nucleotides from the end
 ecrisp= df['ecrisp'].str.replace(r' NGG$', '')
+end= end.sub(3)
 
 # Combine all dataframes into four columns and write to csv file
 combined = pd.concat([crispick, ecrisp, start, end], join = 'outer', axis = 1) 
@@ -32,7 +34,6 @@ df = pd.read_csv(r'.\output\compare_guides.txt', sep='\t')
 intersection = df.merge(df, how = 'inner', left_on = ['crispick'], right_on=['ecrisp'])
 intersection.drop(columns=['crispick_x', 'crispick_y','ecrisp_x','start_x','end_x'], inplace = True)
 intersection.rename(columns={'ecrisp_y': 'Nucleotide sequence', 'start_y': 'Start', 'end_y': 'End'}, inplace = True)
-print(intersection)
 
 # write the common sgRNAs and the start and end locations out to a new text file
 intersection.to_csv(r'.\output\common_sgrnas.txt', sep='\t', index=False)
