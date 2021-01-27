@@ -8,7 +8,6 @@ from utils import *
 # this function needs sgrna-designs.txt and all_results_together.tab
 def sgRNAs(path):
 
-    print (path)
     path1= path+ "/sgrna-designs.txt"
     path2= path + "/all_results_together.tab"
 
