@@ -11,7 +11,16 @@ from picksgRNAstoprimers import sgRNAs
 
 directory = 'C:/Users/Samantha/Box Sync/Wilusz Lab/Test'
 
+log=[]
 for root, subdirectories, files in os.walk(directory):
     for subdirectory in subdirectories:
-        # print(os.path.join(root, subdirectory))
-        sgRNAs(os.path.join(root, subdirectory))
+        
+        log.append(subdirectory)
+        log.append(sgRNAs(os.path.join(root, subdirectory)))
+        errorlogpath= directory+'/Error-Log.txt'
+
+        # write the error log out to a new txt file 
+        file = open(errorlogpath, 'w+', newline ='') 
+        with file:     
+            write = csv.writer(file) 
+            write.writerows(log)         
