@@ -9,7 +9,7 @@ from utils import *
 # import method sgRNAs
 from picksgRNAstoprimers import sgRNAs
 
-directory = 'C:/Users/Samantha/Box Sync/Wilusz Lab/Test'
+directory = 'C:/Users/Samantha/Box Sync/Wilusz Lab/sgRNAs'
 
 log=[]
 for root, subdirectories, files in os.walk(directory):
