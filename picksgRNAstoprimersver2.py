@@ -37,14 +37,14 @@ def sgRNAsver2(path):
         ecrisp= df['ecrisp'].str.replace(r' NGG$', '')
         end= end.sub(3)
 
-        outputpath= path+'\output_compare-guides.txt'
+        outputpath= path+'\output_1-compare-guides.txt'
         # Combine all dataframes into four columns and write to csv file
         combined = pd.concat([crispick, ecrisp, start, end], join = 'outer', axis = 1) 
         combined.to_csv(outputpath, sep='\t', index = False)
-        log.append ("Success...output_compare-guides.txt")
+        log.append ("Success...output_1-compare-guides.txt")
 
     except:
-        log.append ("Fail...output_compare-guides.txt")
+        log.append ("Fail...output_1-compare-guides.txt")
 
     # Second try catch for reading in both sets of sRNAs and writing out the sgRNAs in common
     try:
@@ -57,11 +57,11 @@ def sgRNAsver2(path):
         intersection.rename(columns={'ecrisp_y': 'Nucleotide sequence', 'start_y': 'Start', 'end_y': 'End'}, inplace = True)
 
         # write the common sgRNAs and the start and end locations out to a new text file
-        outputpath= path+'\output_guide-loc.txt'
+        outputpath= path+'\output_2-guide-loc.txt'
         intersection.to_csv(outputpath, sep='\t', index=False)
-        log.append ("Success...output_guide-loc.txt")
+        log.append ("Success...output_2-guide-loc.txt")
     except:
-        log.append ("Fail...output_guide-loc.txt")
+        log.append ("Fail...output_2-guide-loc.txt")
 
     # third try catch for reading in common sgRNAs and writing out sorted by genome location
     try:
@@ -74,40 +74,45 @@ def sgRNAsver2(path):
         # Sort the guides by genome location and remove duplicates
         df.drop_duplicates(inplace=True)
         df = df.sort_values(by=['Start'])
+        outputpath= path+'\output_3-sorted_guides-loc.txt'
         df.to_csv(outputpath, sep='\t', index=False)
-        log.append ("Success...output_sorted_guides.txt")
+        log.append ("Success...output_3-sorted_guides-loc.txt")
     except:
-        log.append ("Fail...output_sorted_guides.txt")
+        log.append ("Fail...output_3-sorted_guides-loc.txt")
 
     # fourth try catch to remove guides that are within 3 nucleotides of each other if there are more than 16 guides in common
     try:
         # if there are more than 16 guides then go through guides and check if a guide's start is within 3 nt of it if so delete the second instance
+        # read in sorted guides that have duplicates removed
+        df = pd.read_csv(outputpath, sep='\t')
+        seq = df["Nucleotide sequence"]
+        start = df["Start"]
+        end= df["End"]
+
         len= seq.size
         if len >=16:
-            dfCopy = df.copy()
-            dfCopy = dfCopy.sort_values(by=['Start'])
-            dfCopy = dfCopy.reset_index(drop=True)
-            dfCopy["id"] = dfCopy.index
-            dfCopy2 = dfCopy.copy()
-            dfCopy2["nextId"] = dfCopy2['id'] + 1
-            dfSelfJoin = pd.merge(dfCopy2, dfCopy, how="inner", left_on='nextId', right_on='id', suffixes=('','_y'))
-            dfSelfJoin["diff"] = dfSelfJoin["Start_y"] - dfSelfJoin["Start"]
-            dfSelfJoin = dfSelfJoin[dfSelfJoin["diff"] <= 3]
-            dfRemove = dfSelfJoin[['Start']]
-            df = df[~df['Start'].isin(dfRemove['Start'].values)]
+            startiter = 0
+            delete = []
+            for i in range(1, len):
+                if start.loc[i] - start.loc[startiter] <= 3:
+                    delete.append(i)
+                else:
+                    startiter = i
+
+            df.drop(delete, axis='index', inplace=True)
 
             # write out to the final guides file
-            outputpath= path+'\output_final-guides-loc.txt'
+            outputpath= path+'\output_4-final-guides-loc.txt'
             df.to_csv(outputpath, sep='\t', index=False)
-            log.append ("Success...output_final-guides-loc.txt")
-
+            log.append ("Success...output_4-final-guides-loc.txt")
+            
         # if there are less than or equal to 16 guides then just write out that file to final guides
         else:
-            outputpath= path+'\output_final-guides-loc.txt'
+            outputpath= path+'\output_4-final-guides-loc.txt'
             df.to_csv(outputpath, sep='\t', index=False)
-            log.append ("Success...output_final-guides-loc.txt")
+            log.append ("Success...output_4-final-guides-loc.txt")
     except:
-        log.append ("Fail...output_final-guides.txt")
+        log.append ("Fail...output_4-final-guides.txt")
     
     # fifth try catch to calculate combination of 10 sgRNAs and write out the ranked guides
     try:
@@ -117,7 +122,6 @@ def sgRNAsver2(path):
         seq= df["Nucleotide sequence"]
         start= df["Start"]
         end= df["End"]
-        print (df)
 
         # calculate all the combinations of ten sgRNAs. If there are less than 10 sgRNAs in common then raise an Exception
         len= seq.size
@@ -244,33 +248,33 @@ def sgRNAsver2(path):
             fasta.append(str(topresult[0][x]))
 
         # write out fasta file of top results
-        outputpath= path+'\output_fasta.txt'
+        outputpath= path+'\output_5-fasta.txt'
         with open(outputpath,'w') as f:
             f.write('\n'.join(fasta))
-        log.append ("Success...output_fasta.txt")
+        log.append ("Success...output_5-fasta.txt")
 
         # write out text file of chosen guides to generate forward and reverse sgRNA primers
-        outputpath= path+'\output_input-guides.txt'
+        outputpath= path+'\output_6-input-guides.txt'
         with open(outputpath,'w') as f:
             inputguides=["Guides"]
             for x in range (0,10):
                 inputguides.append(topresult[0][x])    
             f.write('\n'.join(inputguides))
-        log.append ("Success...output_input-guides.txt")
+        log.append ("Success...output_6-input-guides.txt")
         
         # writes all the combinations and thier corresponding scores out to a csv file
         result= pd.DataFrame(rankedlist, columns=["index", "rank1","stdev","rankpos", "rankneg",'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score', 'score'])
-        outputpath= path+'\output_ranked_guides.txt'
+        outputpath= path+'\output_7-ranked_guides.txt'
         result.to_csv(outputpath, sep='\t', index=False)
-        log.append ("Success...output_ranked_guides.txt")
+        log.append ("Success...output_7-ranked_guides.txt")
 
     except:
-        log.append ("Fail...output_ranked_guides.txt")
+        log.append ("Fail...output_7-ranked_guides.txt")
 
     # sixth try catch to read in the chosen guides and write out the primer sequences
     try:
         # read in the common sgRNAs and thier genome locations
-        outputpath= path+'\output_input-guides.txt'
+        outputpath= path+'\output_6-input-guides.txt'
         df = pd.read_csv(outputpath, sep='\t')
         guides= df["Guides"]
 
@@ -314,11 +318,11 @@ def sgRNAsver2(path):
                 sheet1.write(x+1, 2, "No reverse primer")
 
         # write to output file
-        outputpath= path+'\output_primers.xls'
+        outputpath= path+'\output_8-primers.xls'
         wb.save(outputpath)
-        log.append ("Success...output_primers.xls")
+        log.append ("Success...output_8-primers.xls")
 
     except:
-        log.append ("Fail...output_primers.xls")
+        log.append ("Fail...output_8-primers.xls")
 
     return log
