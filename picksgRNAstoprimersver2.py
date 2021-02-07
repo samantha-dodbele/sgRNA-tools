@@ -90,7 +90,7 @@ def sgRNAsver2(path):
         end= df["End"]
 
         len= seq.size
-        if len >=16:
+        if 16 <= len < 20:
             startiter = 0
             delete = []
             for i in range(1, len):
@@ -106,7 +106,24 @@ def sgRNAsver2(path):
             df.to_csv(outputpath, sep='\t', index=False)
             log.append ("Success...output_4-final-guides-loc.txt")
             
-        # if there are less than or equal to 16 guides then just write out that file to final guides
+        # condition if there are more than 20 guides in common then removes guides within 5 nt
+        elif len >= 20:
+            startiter = 0
+            delete = []
+            for i in range(1, len):
+                if start.loc[i] - start.loc[startiter] <= 5:
+                    delete.append(i)
+                else:
+                    startiter = i
+
+            df.drop(delete, axis='index', inplace=True)
+
+            # write out to the final guides file
+            outputpath= path+'\output_4-final-guides-loc.txt'
+            df.to_csv(outputpath, sep='\t', index=False)
+            log.append ("Success...output_4-final-guides-loc.txt")
+
+        # if there are less than 16 guides then just write out that file to final guides
         else:
             outputpath= path+'\output_4-final-guides-loc.txt'
             df.to_csv(outputpath, sep='\t', index=False)
