@@ -150,7 +150,7 @@ def sgRNAsver2(path):
     
     # fifth try catch to calculate combination of 10 sgRNAs and write out the ranked guides
     try:
-        
+        # outputpath= path+'\output_4-final-guides-loc.txt'
         # read in the common sgRNAs and thier genome locations
         df = pd.read_csv(outputpath, sep='\t')
         seq= df["Nucleotide sequence"]
