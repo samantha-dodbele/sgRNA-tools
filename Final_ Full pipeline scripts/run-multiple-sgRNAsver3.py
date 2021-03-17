@@ -9,7 +9,7 @@ from utils_ver3 import *
 # import method sgRNAs
 from picksgRNAstoprimersver3 import sgRNAsver3
 
-directory = 'C:/Users/Samantha/Box Sync/Wilusz Lab/sgRNAs'
+directory = 'C:/Users/Samantha/Box Sync/Wilusz Lab/Data/210316 Twist Library Primer Strategy/210316 CRISPRi sgRNAs'
 
 log=[]
 for root, subdirectories, files in os.walk(directory):
