@@ -5,7 +5,7 @@ from itertools import combinations
 import csv
 import statistics
 from xlwt import Workbook
-from utils import *
+from utils_ver3 import *
 # import method sgRNAs
 from picksgRNAstoprimersver3 import sgRNAsver3
 
@@ -16,7 +16,7 @@ for root, subdirectories, files in os.walk(directory):
     for subdirectory in subdirectories:
         
         log.append(subdirectory)
-        log.append(sgRNAsver2(os.path.join(root, subdirectory)))
+        log.append(sgRNAsver3(os.path.join(root, subdirectory)))
         errorlogpath= directory+'/Error-Log.txt'
 
         # write the error log out to a new txt file 
